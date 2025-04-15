@@ -6,9 +6,9 @@ import { TripMapComponent } from '../trip-map/trip-map.component';
   selector: 'app-home',
   imports: [TripInputComponent, TripMapComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-title ='Trip Map';
-constructor(){}
+  title = 'Trip Map';
+  constructor() {}
 }

@@ -13,7 +13,7 @@ export class TripService {
     const lastTrip = this.trips[this.trips.length - 1];
     const isDuplicateTrip = this.trips.some(
       (existingTrip) =>
-        existingTrip.start === trip.start && existingTrip.end === trip.end
+        existingTrip.start === trip.start && existingTrip.end === trip.end && !existingTrip.intermediate
     );
     if (isDuplicateTrip) {
       lastTrip.level = 2;
