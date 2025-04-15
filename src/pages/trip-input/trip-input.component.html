@@ -1,0 +1,65 @@
+<form [formGroup]="tripForm" (ngSubmit)="addTrip()">
+  <div class="container px-4">
+    <div class="row gx-3">
+      <div class="col-lg-5">
+        <label for="startPoint" class="form-label">Start Point *</label>
+        <select
+          id="startPoint"
+          formControlName="startPoint"
+          class="form-select"
+          required
+          [ngClass]="{
+            'is-invalid':
+              tripForm.controls['startPoint'].invalid &&
+              (tripForm.controls['startPoint'].dirty ||
+                tripForm.controls['startPoint'].touched),
+            'is-valid': !tripForm.controls['startPoint'].invalid
+          }"
+        >
+          <option value="">Select Start Point</option>
+          <option *ngFor="let location of locations" [value]="location">
+            {{ location }}
+          </option>
+        </select>
+        @if(tripForm.controls['startPoint'].invalid &&
+        (tripForm.controls['startPoint'].dirty ||
+        tripForm.controls['startPoint'].touched)){
+        <div class="invalid-feedback">Start point is required.</div>
+        }
+      </div>
+      <div class="col-lg-5">
+        <label for="endPoint" class="form-label">End Point *</label>
+        <select
+          id="endPoint"
+          formControlName="endPoint"
+          class="form-select"
+          required
+          [ngClass]="{
+            'is-invalid':
+              tripForm.controls['endPoint'].invalid &&
+              (tripForm.controls['endPoint'].dirty ||
+                tripForm.controls['endPoint'].touched),
+            'is-valid': !tripForm.controls['endPoint'].invalid
+          }"
+        >
+          <option value="">Select Start Point</option>
+          <option *ngFor="let location of locations" [value]="location">
+            {{ location }}
+          </option>
+        </select>
+        @if(tripForm.controls['endPoint'].invalid &&
+        (tripForm.controls['endPoint'].dirty ||
+        tripForm.controls['endPoint'].touched)){
+        <div class="invalid-feedback">
+          @if(tripForm.controls['endPoint'].hasError('required')){
+          <div>End point is required.</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="col-lg-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Add Trip</button>
+      </div>
+    </div>
+  </div>
+</form>

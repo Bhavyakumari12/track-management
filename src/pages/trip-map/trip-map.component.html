@@ -1,0 +1,61 @@
+<div class="container px-4">
+  <div class="row">
+    @for (trip of tripGroups; track trip; let i = $index) {
+    <div class="trip-info mb-2">
+      <span
+        >{{ trip.start }} @if (trip.intermediate?.length) { @for (medium of
+        trip.intermediate; track medium) { → {{ medium }} } } →
+        {{ trip.end }}</span
+      >
+
+      @if (trip.isArrow) {
+      <span class="arrow-indicator"> ⬆ (Arrow)</span>
+      } @if (trip.level === 2) {
+      <span class="level-indicator"> (Level 2)</span>
+      }
+    </div>
+
+    <div
+      class="trip-line mb-4"
+      [class.level-1]="trip.level === 1"
+      [class.level-2]="trip.level === 2"
+      [class.arrowed]="trip.isArrow"
+    ></div>
+    }
+  </div>
+</div>
+
+<!-- <div class="container px-4">
+  <div class="row">
+    @for (group of tripGroups; track group;) {
+      <div class="row">
+        @for (trip of group; track trip; let i = $index) {
+          <div class="trip-info mb-2">
+            @if (i === 0) {
+              <span>{{ trip.start }} → {{ trip.end }}</span>
+            } @else {
+              → {{ trip.end }}
+            }
+
+            @if (trip.isArrow) {
+              <span class="arrow-indicator">⬆</span>
+            }
+
+            @if (trip.level === 2) {
+              <span class="level-indicator">(Level 2)</span>
+            }
+          </div>
+
+          <div
+            class="trip-line mb-4"
+            [ngClass]="{
+              'level-1': trip.level === 1,
+              'level-2': trip.level === 2,
+              'arrowed': trip.isArrow
+            }"
+          ></div>
+        }
+      </div>
+    }
+  </div>
+</div> -->
