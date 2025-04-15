@@ -1,41 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Trip } from '../model/trip';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripService {
-  constructor() {}
-  trips: Trip[] = [];
-  tripGroups: Array<Array<Trip>> = [];
-  locations = ['Bangalore', 'Chennai', 'Ooty', 'Hyderabad', 'Mumbai'];
-  addTrip(trip: { start: string; end: string }) {
-    const lastTrip = this.trips[this.trips.length - 1];
-    const isDuplicateTrip = this.trips.some(
-      (existingTrip) =>
-        existingTrip.start === trip.start && existingTrip.end === trip.end && !existingTrip.intermediate
-    );
-    if (isDuplicateTrip) {
-      lastTrip.level = 2;
-    } else if (lastTrip) {
-      if (lastTrip.end === trip.start) {
-        if (!lastTrip.intermediate) {
-          lastTrip.intermediate = [];
-        }
-        lastTrip?.intermediate.push(trip.start);
-        lastTrip.end = trip.end;
-      } else if (lastTrip.start === trip.end) {
-        this.trips.push({ ...trip, level: 1, isArrow: true });
-      } else {
-        this.trips.push({ ...trip, level: 1, isArrow: false });
-      }
-    } else {
-      this.trips.push({ ...trip, level: 1, isArrow: false });
-    }
-  }
+  private tripsSubject = new BehaviorSubject<Trip[]>([]);
+  trips$ = this.tripsSubject.asObservable();
 
-  getTrips() {
-    return this.trips;
+  locations = ['Bangalore', 'Chennai', 'Ooty', 'Hyderabad', 'Mumbai'];
+
+  addTrip(trip: Trip) {
+    const current = this.tripsSubject.getValue();
+    this.tripsSubject.next([...current, trip]);
   }
 
   getLocations() {

@@ -1,61 +1,52 @@
-<div class="container px-4">
-  <div class="row">
-    @for (trip of tripGroups; track trip; let i = $index) {
-    <div class="trip-info mb-2">
-      <span
-        >{{ trip.start }} @if (trip.intermediate?.length) { @for (medium of
-        trip.intermediate; track medium) { → {{ medium }} } } →
-        {{ trip.end }}</span
-      >
-
-      @if (trip.isArrow) {
-      <span class="arrow-indicator"> ⬆ (Arrow)</span>
-      } @if (trip.level === 2) {
-      <span class="level-indicator"> (Level 2)</span>
-      }
-    </div>
-
-    <div
-      class="trip-line mb-4"
-      [class.level-1]="trip.level === 1"
-      [class.level-2]="trip.level === 2"
-      [class.arrowed]="trip.isArrow"
-    ></div>
-    }
-  </div>
-</div>
-
-<!-- <div class="container px-4">
-  <div class="row">
-    @for (group of tripGroups; track group;) {
-      <div class="row">
-        @for (trip of group; track trip; let i = $index) {
-          <div class="trip-info mb-2">
-            @if (i === 0) {
-              <span>{{ trip.start }} → {{ trip.end }}</span>
-            } @else {
-              → {{ trip.end }}
-            }
-
-            @if (trip.isArrow) {
-              <span class="arrow-indicator">⬆</span>
-            }
-
-            @if (trip.level === 2) {
-              <span class="level-indicator">(Level 2)</span>
-            }
-          </div>
-
-          <div
-            class="trip-line mb-4"
-            [ngClass]="{
-              'level-1': trip.level === 1,
-              'level-2': trip.level === 2,
-              'arrowed': trip.isArrow
-            }"
-          ></div>
-        }
-      </div>
-    }
-  </div>
-</div> -->
+<svg [attr.width]="renderedTrips.length * 160 + 100" height="300">
+  <defs>
+    <marker
+      id="arrow"
+      markerWidth="10"
+      markerHeight="10"
+      refX="6"
+      refY="3"
+      orient="auto"
+    >
+      <path d="M0,0 L0,6 L9,3 z" fill="dodgerblue" />
+    </marker>
+  </defs>
+  @for(trip of renderedTrips; track trip ; let i = $index){
+  <ng-container>
+    <g [attr.transform]="'translate(' + i * 160 + ', 0)'">
+      <ng-container [ngSwitch]="trip.level">
+        <g *ngSwitchCase="1" transform="translate(0, 100)">
+          <text x="0" y="-10">{{ trip.start }}</text>
+          <circle cx="0" cy="0" r="5" fill="dodgerblue" />
+          <line
+            x1="0"
+            y1="0"
+            x2="120"
+            y2="0"
+            stroke="dodgerblue"
+            stroke-width="2"
+            [attr.marker-end]="trip.hasArrow ? 'url(#arrow)' : null"
+          />
+          <circle cx="120" cy="0" r="5" fill="dodgerblue" />
+          <text x="100" y="-10">{{ trip.end }}</text>
+        </g>
+        <g *ngSwitchCase="2" transform="translate(0, 180)">
+          <text x="-15" y="-10">{{ trip.start }}</text>
+          <circle cx="0" cy="0" r="5" fill="orange" />
+          <line
+            x1="0"
+            y1="0"
+            x2="120"
+            y2="0"
+            stroke="orange"
+            stroke-width="2"
+          />
+          <circle cx="120" cy="0" r="5" fill="orange" />
+          <text x="100" y="15">{{ trip.end }}</text>
+          <text x="50" y="-10" fill="orange">x{{ trip.count }}</text>
+        </g>
+      </ng-container>
+    </g>
+  </ng-container>
+  }
+</svg>
